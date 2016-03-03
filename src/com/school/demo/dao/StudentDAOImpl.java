@@ -9,6 +9,7 @@ import javax.persistence.PersistenceContextType;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.school.demo.model.CourseEntity;
 import com.school.demo.model.StudentEntity;
 
 @Repository
@@ -46,6 +47,21 @@ public class StudentDAOImpl implements StudentDAO{
 	
 	public StudentEntity getStudent(int id){
 		return manager.find(StudentEntity.class, id);	
+	}
+
+	public List<CourseEntity> getAllCourses() {
+		List<CourseEntity> coureses = manager.createQuery("Select a From CourseEntity a", CourseEntity.class).getResultList();
+		return coureses;
+	}
+
+	public void addCourses(int studentID, List<CourseEntity> courses) {
+		StudentEntity studentEntity = manager.find(StudentEntity.class, studentID);
+		for(CourseEntity course:courses){
+			CourseEntity courseDao = manager.find(CourseEntity.class, course.getId());//TODO remove this
+			studentEntity.addCourse(courseDao);
+		}
+		manager.merge(studentEntity);
+		manager.flush();
 	}	
 
 }

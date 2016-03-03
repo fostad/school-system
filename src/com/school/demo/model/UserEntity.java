@@ -7,18 +7,23 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table (name="user")
 public class UserEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
-	private Integer id;
-	
+	private Integer id;	
 	String username;
 	String password;
+	@Transient
+	private String passwordConfirm;
+    private String role;
+
 	public Integer getId() {
 		return id;
 	}
@@ -38,6 +43,22 @@ public class UserEntity implements Serializable{
 		this.password = password;
 	}
 	
-	
+	@Transient
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
+    }
+    
+    public String getRole() {
+        return role;
+    }
+ 
+    public void setRole(String role) {
+        this.role = role;
+    }   
+
 
 }

@@ -1,5 +1,6 @@
 package com.school.demo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -13,14 +14,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.school.demo.editors.CourseEditor;
+import com.school.demo.editors.TeacherEditor;
+import com.school.demo.model.CourseEntity;
 import com.school.demo.model.StudentEntity;
+import com.school.demo.model.TeacherEntity;
 import com.school.demo.service.StudentManager;
 
 @Controller
@@ -35,6 +43,18 @@ public class StudentController {
 	public StudentController(){
 		ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
 		validator = validatorFactory.getValidator();
+	}
+	
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+	    binder.registerCustomEditor(CourseEntity.class, new CourseEditor());
+	}
+	
+	@ModelAttribute("allCourses")
+	public List<CourseEntity> populateCourses() 
+	{
+		List <CourseEntity> courses = manager.getAllCourses();
+		return courses;
 	}
 	
 
@@ -113,10 +133,38 @@ public class StudentController {
 		return "redirect:student-module";
 	}
 	
-	@RequestMapping(value="editStudent", method = RequestMethod.GET)  
+	@RequestMapping(value="/editStudent", method = RequestMethod.GET)  
 	public String editStudent(@RequestParam int id,Model model) { 
-		model.addAttribute("student", manager.getStudent(id));
+		
+		StudentEntity student = manager.getStudent(id);
+		List <CourseEntity> courses = manager.getAllCourses();
+		List <CourseEntity> freeCourses = new ArrayList<CourseEntity>();
+		boolean isEqual = false;
+		for(CourseEntity course:courses){
+			for(CourseEntity studentcourse:student.getCourses()){
+				if(course.getId() == studentcourse.getId()){
+					isEqual = true;
+					break;
+				}
+			}
+			if(!isEqual)
+				freeCourses.add(course);
+			else
+				isEqual = false;
+		}
+		student.setFreeCourses(freeCourses);
+		model.addAttribute("student", student);
+		model.addAttribute("studentCourses", student.getCourses());
+		model.addAttribute("freeCourses",freeCourses);
 		return "studentView";
+	}
+	
+	@RequestMapping(value="addCourses", method = RequestMethod.POST)
+	public String addCourses(@ModelAttribute StudentEntity student, BindingResult result){
+		if(result.hasErrors())
+			return"redirect:editStudent?id="+student.getId();
+		manager.addCourses(student.getId(),student.getFreeCourses());
+		return "redirect:editStudent?id="+student.getId();
 	}
 	
 }

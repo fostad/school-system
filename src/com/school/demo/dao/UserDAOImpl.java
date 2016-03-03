@@ -19,4 +19,10 @@ public class UserDAOImpl implements UserDAO{
 		manager.persist(userEntity);		
 	}
 	
+	public UserEntity findByUsername(String username){
+		return (UserEntity) manager.createQuery("from UserEntity where username = :username",UserEntity.class)
+				.setParameter("username", username)
+                .getSingleResult();
+	}
+	
 }

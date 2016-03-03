@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.school.demo.dao.StudentDAO;
+import com.school.demo.model.CourseEntity;
 import com.school.demo.model.StudentEntity;
 
 @Service
@@ -32,6 +33,14 @@ public class StudentManagerImpl implements StudentManager {
 
 	public StudentEntity getStudent(int id){
 		return studentDAO.getStudent(id);
+	}
+
+	public List<CourseEntity> getAllCourses() {
+		return studentDAO.getAllCourses();
+	}
+
+	public void addCourses(int studentID, List<CourseEntity> courses) {
+		studentDAO.addCourses(studentID, courses);		
 	}
 
 }

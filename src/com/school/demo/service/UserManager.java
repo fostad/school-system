@@ -5,4 +5,5 @@ import com.school.demo.model.UserEntity;
 public interface UserManager {
 
 	public void addUser(UserEntity userEntity);
+	public UserEntity findByUsername(String username);
 }

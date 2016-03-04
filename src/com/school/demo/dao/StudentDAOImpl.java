@@ -62,6 +62,13 @@ public class StudentDAOImpl implements StudentDAO{
 		}
 		manager.merge(studentEntity);
 		manager.flush();
+	}
+
+	public void deleteCourse(int studentID, int courseID) {
+		StudentEntity studentEntity = manager.find(StudentEntity.class, studentID);
+		studentEntity.removeCourse(courseID);
+		manager.merge(studentEntity);
+		manager.flush();
 	}	
 
 }

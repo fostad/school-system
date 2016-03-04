@@ -13,4 +13,5 @@ public interface StudentManager {
 	public void updateStudent(StudentEntity studentEntity);
 	public StudentEntity getStudent(int id);
 	public void addCourses(int studentID, List<CourseEntity> courses);
+	public void deleteCourse(int studentID,int courseID);
 }

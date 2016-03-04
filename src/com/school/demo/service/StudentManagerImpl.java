@@ -43,4 +43,8 @@ public class StudentManagerImpl implements StudentManager {
 		studentDAO.addCourses(studentID, courses);		
 	}
 
+	public void deleteCourse(int studentID, int courseID) {
+		studentDAO.deleteCourse(studentID,courseID);		
+	}
+
 }

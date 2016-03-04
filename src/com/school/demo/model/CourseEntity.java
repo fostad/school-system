@@ -49,6 +49,13 @@ public class CourseEntity implements Serializable{
     	this.id = id;
     }
 	
+	public CourseEntity(Integer id,String name, String points) {
+    	super();
+    	this.id = id;
+    	this.name = name;
+    	this.points = points;
+    }
+	
     public CourseEntity(Integer id,String name, String points, TeacherEntity teacherEntity) {
     	super();
     	this.id = id;

@@ -1,6 +1,7 @@
 package com.school.demo.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -58,6 +59,15 @@ public class StudentEntity extends PersonEntity{
 	
 	public void addCourse(CourseEntity courseEntity){
 		this.courses.add(courseEntity);
+	}
+	
+	public void removeCourse(int courseID){
+		Iterator<CourseEntity> iterator = this.courses.iterator();
+		while(iterator.hasNext()){
+			CourseEntity course = iterator.next();
+			if(course.getId() == courseID)
+				iterator.remove();
+		}
 	}
 
 	@Override

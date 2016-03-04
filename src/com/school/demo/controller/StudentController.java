@@ -167,4 +167,9 @@ public class StudentController {
 		return "redirect:editStudent?id="+student.getId();
 	}
 	
+	@RequestMapping(value="/deleteStudentCourse", method = RequestMethod.GET)
+	public String deleteCourse(@RequestParam int courseID,@RequestParam int studentID){
+		manager.deleteCourse(studentID,courseID);
+		return "redirect:editStudent?id="+studentID;
+	}
 }

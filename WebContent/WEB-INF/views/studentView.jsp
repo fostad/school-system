@@ -91,12 +91,14 @@
 				    <td>ID</td>
 				    <td>Name</td>
 				    <td>Points</td>
+				    <td>Delete</td>
 			    </tr>
 				<c:forEach items="${studentCourses}" var="course">    
 				  <tr>
 				    <td>${course.id}</td>
 				    <td>${course.name}</td>
 				    <td>${course.points}</td>
+				    <td><a href="deleteStudentCourse?courseID=${course.id}&studentID=${student.id}">Delete</a></td>
 				  </tr>
 				</c:forEach>
 				</table>
